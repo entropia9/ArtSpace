@@ -6,7 +6,6 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -38,31 +37,34 @@ import com.example.artspace.ui.theme.ArtSpaceTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val galleryDb = GalleryDatabase.getInstance(this)
+
+        var galleryList = galleryDb.artworkDao().getAll()
+
         setContent {
             ArtSpaceTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
-                    ArtSpaceApp()
-                }
+                //           ArtSpaceApp(galleryList[0])
             }
+
         }
     }
 }
 
 @Composable
-fun ArtSpaceApp() {
+fun ArtSpaceApp(initialArtwork: Artwork) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         var imageUrl by remember {
-            mutableStateOf("https://cdnb.artstation.com/p/assets/covers/images/003/196/869/small/marta-kut-thumbnail.jpg?1470918530")
+            mutableStateOf(initialArtwork.url)
         }
         var title by remember {
-            mutableStateOf("Biomodem")
+            mutableStateOf(initialArtwork.title)
+        }
+        var artist by remember {
+            mutableStateOf(initialArtwork.artist)
         }
         var year by remember {
-            mutableStateOf("2016")
+            mutableStateOf(initialArtwork.year.toString())
         }
         ArtworkDisplay(
             imageUrl,
@@ -70,7 +72,7 @@ fun ArtSpaceApp() {
         )
         ArtworkData(
             title = title,
-            artist = stringResource(id = R.string.artist_name),
+            artist = artist,
             year = year,
             Modifier
                 .weight(0.18f)
@@ -79,10 +81,18 @@ fun ArtSpaceApp() {
         ButtonsRow(nextFunction = {
             imageUrl =
                 "https://cdna.artstation.com/p/assets/images/images/001/961/420/small_square/marta-kut-screenshot001.jpg?1455204041"
-            title="Transgenic organism 02"
-            year="2016"
+            title = "Transgenic organism 02"
+            year = "2016"
         })
     }
+}
+
+fun getNextArtworkData(list: List<Artwork>) {
+
+}
+
+fun getPreviousArtworkData(list: List<Artwork>) {
+
 }
 
 @OptIn(ExperimentalGlideComposeApi::class)
@@ -167,6 +177,6 @@ fun ButtonsRow(
 @Composable
 fun ArtSpacePreview() {
     ArtSpaceTheme {
-        ArtSpaceApp()
+        //  ArtSpaceApp()
     }
 }
