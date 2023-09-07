@@ -3,6 +3,7 @@ package com.example.artspace
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,12 +11,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,7 +35,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import com.example.artspace.ui.theme.ArtSpaceTheme
+import com.example.compose.ArtSpaceTheme
 
 class MainActivity : ComponentActivity() {
 
@@ -54,7 +57,10 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ArtSpaceApp(initialArtwork: Artwork, gallery: Gallery) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+    ) {
         var imageUrl by remember {
             mutableStateOf(initialArtwork.url)
         }
@@ -69,31 +75,33 @@ fun ArtSpaceApp(initialArtwork: Artwork, gallery: Gallery) {
         }
         ArtworkDisplay(
             imageUrl,
-            modifier = Modifier.weight(0.6f)
+            modifier = Modifier.weight(0.7f)
         )
         ArtworkData(
             title = title,
             artist = artist,
             year = year,
             Modifier
-                .weight(0.18f)
-                .padding(bottom = 20.dp)
+                .weight(0.3f)
+                .padding(bottom = 50.dp)
         )
-        ButtonsRow(nextFunction = {
-            val nextArtwork = gallery.getNextArtworkData()
-            imageUrl = nextArtwork.url
-            title = nextArtwork.title
-            artist = nextArtwork.artist
-            year = nextArtwork.year.toString()
-        },
-        previousFunction = {
-            val previousArtwork = gallery.getPreviousArtworkData()
-            imageUrl = previousArtwork.url
-            title = previousArtwork.title
-            artist = previousArtwork.artist
-            year = previousArtwork.year.toString()
+        ButtonsRow(
+            modifier = Modifier.padding(bottom = 20.dp),
+            nextFunction = {
+                val nextArtwork = gallery.getNextArtworkData()
+                imageUrl = nextArtwork.url
+                title = nextArtwork.title
+                artist = nextArtwork.artist
+                year = nextArtwork.year.toString()
+            },
+            previousFunction = {
+                val previousArtwork = gallery.getPreviousArtworkData()
+                imageUrl = previousArtwork.url
+                title = previousArtwork.title
+                artist = previousArtwork.artist
+                year = previousArtwork.year.toString()
 
-        }
+            }
 
         )
     }
@@ -106,6 +114,7 @@ fun ArtworkDisplay(image: String, modifier: Modifier = Modifier) {
     Surface(
         color = MaterialTheme.colorScheme.secondary,
         modifier = modifier.wrapContentSize(),
+        shape = RoundedCornerShape(5),
         shadowElevation = 20.dp
     ) {
         GlideImage(
@@ -123,9 +132,10 @@ fun ArtworkDisplay(image: String, modifier: Modifier = Modifier) {
 fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier = Modifier) {
 
     Surface(
-        color = MaterialTheme.colorScheme.tertiary, modifier = modifier
+        color = MaterialTheme.colorScheme.inversePrimary, modifier = modifier
             .fillMaxWidth()
-            .padding(16.dp)
+            .padding(20.dp),
+        shape = RoundedCornerShape(5)
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -135,7 +145,8 @@ fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier 
             Text(
                 text = title,
                 fontSize = 24.sp,
-                modifier = Modifier.padding(bottom = 10.dp)
+                modifier = Modifier.padding(bottom = 10.dp),
+                color = MaterialTheme.colorScheme.onSecondaryContainer
             )
             Text(text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
@@ -178,10 +189,48 @@ fun ButtonsRow(
     }
 }
 
-@Preview(showBackground = true, showSystemUi = true)
+@Preview(showBackground = true)
 @Composable
-fun ArtSpacePreview() {
-    ArtSpaceTheme {
-        //  ArtSpaceApp()
+fun Preview() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+    ) {
+        val imageUrl by remember {
+            mutableStateOf("")
+        }
+        val title by remember {
+            mutableStateOf("test")
+        }
+        val artist by remember {
+            mutableStateOf("test")
+        }
+        val year by remember {
+            mutableIntStateOf(2)
+            mutableIntStateOf(2)
+        }
+        ArtworkDisplay(
+            imageUrl,
+            modifier = Modifier.weight(0.7f)
+        )
+        ArtworkData(
+            title = title,
+            artist = artist,
+            year = year.toString(),
+            Modifier
+                .weight(0.3f)
+                .padding(bottom = 50.dp)
+        )
+        ButtonsRow(
+            Modifier.padding(bottom = 20.dp),
+            nextFunction = {
+
+            },
+            previousFunction = {
+
+            }
+
+        )
     }
 }
+

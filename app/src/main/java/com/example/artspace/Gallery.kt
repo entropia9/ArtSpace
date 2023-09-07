@@ -4,8 +4,6 @@ class Gallery(
     private val galleryList: List<Artwork>,
     var index: Int = 0
 ) {
-
-
     fun getNextArtworkData(): Artwork {
         return if (index == galleryList.size - 1) {
             index=0
