@@ -35,13 +35,14 @@ import com.bumptech.glide.integration.compose.GlideImage
 import com.example.artspace.ui.theme.ArtSpaceTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         val galleryDb = ArtworkDatabase.getInstance(this)
 
         val galleryList = galleryDb.artworkDao().getAll()
-        val gallery = Gallery(galleryList, 0)
+        val gallery = Gallery(galleryList)
         setContent {
             ArtSpaceTheme {
                 ArtSpaceApp(galleryList[0], gallery = gallery)
