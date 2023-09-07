@@ -4,7 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity
+@Entity("gallery")
 data class Artwork(
     @PrimaryKey val id:Int,
     @ColumnInfo(name="title") val title:String,

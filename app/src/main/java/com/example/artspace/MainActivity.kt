@@ -38,13 +38,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val galleryDb = GalleryDatabase.getInstance(this)
+        val galleryDb = ArtworkDatabase.getInstance(this)
 
-        var galleryList = galleryDb.artworkDao().getAll()
-
+        val galleryList = galleryDb.artworkDao().getAll()
+        val gallery = Gallery(galleryList, 0)
         setContent {
             ArtSpaceTheme {
-                //           ArtSpaceApp(galleryList[0])
+                ArtSpaceApp(galleryList[0], gallery = gallery)
             }
 
         }
@@ -52,7 +52,7 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ArtSpaceApp(initialArtwork: Artwork) {
+fun ArtSpaceApp(initialArtwork: Artwork, gallery: Gallery) {
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
         var imageUrl by remember {
             mutableStateOf(initialArtwork.url)
@@ -79,21 +79,25 @@ fun ArtSpaceApp(initialArtwork: Artwork) {
                 .padding(bottom = 20.dp)
         )
         ButtonsRow(nextFunction = {
-            imageUrl =
-                "https://cdna.artstation.com/p/assets/images/images/001/961/420/small_square/marta-kut-screenshot001.jpg?1455204041"
-            title = "Transgenic organism 02"
-            year = "2016"
-        })
+            val nextArtwork = gallery.getNextArtworkData()
+            imageUrl = nextArtwork.url
+            title = nextArtwork.title
+            artist = nextArtwork.artist
+            year = nextArtwork.year.toString()
+        },
+        previousFunction = {
+            val previousArtwork = gallery.getPreviousArtworkData()
+            imageUrl = previousArtwork.url
+            title = previousArtwork.title
+            artist = previousArtwork.artist
+            year = previousArtwork.year.toString()
+
+        }
+
+        )
     }
 }
 
-fun getNextArtworkData(list: List<Artwork>) {
-
-}
-
-fun getPreviousArtworkData(list: List<Artwork>) {
-
-}
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
