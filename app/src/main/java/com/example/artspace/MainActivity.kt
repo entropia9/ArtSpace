@@ -7,11 +7,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -48,7 +51,7 @@ class MainActivity : ComponentActivity() {
         val gallery = Gallery(galleryList)
         setContent {
             ArtSpaceTheme {
-                ArtSpaceApp(galleryList[0], gallery = gallery)
+                ArtSpaceApp(gallery = gallery)
             }
 
         }
@@ -56,50 +59,56 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ArtSpaceApp(initialArtwork: Artwork, gallery: Gallery) {
+fun ArtSpaceApp(gallery: Gallery) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+        verticalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
     ) {
-        var imageUrl by remember {
-            mutableStateOf(initialArtwork.url)
+        var currentArtwork by remember {
+            mutableStateOf(gallery.getCurrentArtworkData())
         }
-        var title by remember {
-            mutableStateOf(initialArtwork.title)
-        }
-        var artist by remember {
-            mutableStateOf(initialArtwork.artist)
-        }
-        var year by remember {
-            mutableStateOf(initialArtwork.year.toString())
-        }
+        var imageUrl = currentArtwork.url
+
+        var title = currentArtwork.title
+
+        var artist = currentArtwork.artist
+
+        var year = currentArtwork.year.toString()
+
         ArtworkDisplay(
             imageUrl,
-            modifier = Modifier.weight(0.7f)
+            modifier = Modifier.align(Alignment.CenterHorizontally),
+            contentDescription = title
         )
         ArtworkData(
             title = title,
             artist = artist,
             year = year,
             Modifier
-                .weight(0.3f)
+                .align(Alignment.Start)
                 .padding(bottom = 50.dp)
         )
         ButtonsRow(
-            modifier = Modifier.padding(bottom = 20.dp),
+            modifier = Modifier
+                .padding(bottom = 20.dp)
+                .align(Alignment.End),
             nextFunction = {
-                val nextArtwork = gallery.getNextArtworkData()
-                imageUrl = nextArtwork.url
-                title = nextArtwork.title
-                artist = nextArtwork.artist
-                year = nextArtwork.year.toString()
+                currentArtwork = gallery.getNextArtworkData()
+                imageUrl = currentArtwork.url
+                title = currentArtwork.title
+                artist = currentArtwork.artist
+                year = currentArtwork.year.toString()
             },
             previousFunction = {
-                val previousArtwork = gallery.getPreviousArtworkData()
-                imageUrl = previousArtwork.url
-                title = previousArtwork.title
-                artist = previousArtwork.artist
-                year = previousArtwork.year.toString()
+                currentArtwork = gallery.getPreviousArtworkData()
+                imageUrl = currentArtwork.url
+                title = currentArtwork.title
+                artist = currentArtwork.artist
+                year = currentArtwork.year.toString()
 
             }
 
@@ -107,22 +116,30 @@ fun ArtSpaceApp(initialArtwork: Artwork, gallery: Gallery) {
     }
 }
 
-
+// Displays artwork from url using Glide
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun ArtworkDisplay(image: String, modifier: Modifier = Modifier) {
+fun ArtworkDisplay(
+    image: String,
+    modifier: Modifier = Modifier,
+    contentDescription: String = stringResource(
+        R.string.placeholder
+    )
+) {
     Surface(
         color = MaterialTheme.colorScheme.secondary,
-        modifier = modifier.wrapContentSize(),
+        modifier = modifier
+            .wrapContentSize()
+            .padding(20.dp),
         shape = RoundedCornerShape(5),
         shadowElevation = 20.dp
     ) {
         GlideImage(
             model = image,
-            contentDescription = "placeholder",
-            modifier = modifier
-                .padding(30.dp)
-                .size(250.dp),
+            contentDescription = contentDescription,
+            modifier = Modifier
+                .size(433.dp)
+                .padding(20.dp),
             transition = CrossFade
         )
     }
@@ -194,7 +211,10 @@ fun ButtonsRow(
 fun Preview() {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.background(MaterialTheme.colorScheme.secondaryContainer)
+        verticalArrangement = Arrangement.Center,
+        modifier = Modifier
+            .background(MaterialTheme.colorScheme.secondaryContainer)
+            .verticalScroll(rememberScrollState())
     ) {
         val imageUrl by remember {
             mutableStateOf("")
@@ -211,14 +231,14 @@ fun Preview() {
         }
         ArtworkDisplay(
             imageUrl,
-            modifier = Modifier.weight(0.7f)
+            modifier = Modifier.align(Alignment.Start)
         )
         ArtworkData(
             title = title,
             artist = artist,
             year = year.toString(),
             Modifier
-                .weight(0.3f)
+                .align(Alignment.Start)
                 .padding(bottom = 50.dp)
         )
         ButtonsRow(

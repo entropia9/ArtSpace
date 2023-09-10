@@ -2,11 +2,18 @@ package com.example.artspace
 
 class Gallery(
     private val galleryList: List<Artwork>,
-    var index: Int = 0
+    private var index: Int = 0
 ) {
+
+    fun getCurrentArtworkData(): Artwork {
+        return if (index in galleryList.indices) {
+            galleryList[index]
+        } else galleryList[0]
+    }
+
     fun getNextArtworkData(): Artwork {
         return if (index == galleryList.size - 1) {
-            index=0
+            index = 0
             galleryList.first()
         } else {
             index++
@@ -16,7 +23,7 @@ class Gallery(
 
     fun getPreviousArtworkData(): Artwork {
         return if (index == 0) {
-            index=galleryList.size-1
+            index = galleryList.size - 1
             galleryList.last()
         } else {
             index--
