@@ -40,6 +40,7 @@ import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.compose.ArtSpaceTheme
 
+
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -117,6 +118,7 @@ fun ArtSpaceApp(gallery: Gallery) {
 }
 
 // Displays artwork from url using Glide
+
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun ArtworkDisplay(
@@ -145,6 +147,7 @@ fun ArtworkDisplay(
     }
 }
 
+// Displays title, artist and year
 @Composable
 fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier = Modifier) {
 
@@ -177,6 +180,7 @@ fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier 
 
 }
 
+// Row of buttons next and previous, functions are passed as lambdas
 @Composable
 fun ButtonsRow(
     modifier: Modifier = Modifier,
