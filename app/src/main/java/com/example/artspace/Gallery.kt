@@ -1,5 +1,7 @@
 package com.example.artspace
 
+import com.example.artspace.model.Artwork
+
 class Gallery(
     private val galleryList: List<Artwork>,
     private var index: Int = 0

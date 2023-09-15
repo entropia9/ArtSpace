@@ -1,9 +1,10 @@
-package com.example.artspace
+package com.example.artspace.database
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import com.example.artspace.model.Artwork
 
 
 @Database(entities = [Artwork::class], version = 2)

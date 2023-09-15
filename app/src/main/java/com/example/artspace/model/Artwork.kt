@@ -1,4 +1,4 @@
-package com.example.artspace
+package com.example.artspace.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

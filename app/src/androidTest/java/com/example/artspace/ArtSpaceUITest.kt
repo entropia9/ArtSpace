@@ -3,6 +3,7 @@ package com.example.artspace
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import com.example.artspace.model.Artwork
 import com.example.compose.ArtSpaceTheme
 import org.junit.Rule
 import org.junit.Test
@@ -13,14 +14,14 @@ class ArtSpaceUITest {
 
     @Test
     fun press_next(){
-        val initialArtwork=Artwork(
+        val initialArtwork= Artwork(
             id=1,
             title="one",
             artist = "entropia",
             year = 2023,
             url = ""
         )
-        val nextArtwork=Artwork(
+        val nextArtwork= Artwork(
             id=2,
             title="two",
             artist = "entropia",
@@ -31,7 +32,7 @@ class ArtSpaceUITest {
         composeTestRule.setContent {
 
             ArtSpaceTheme() {
-                ArtSpaceApp(initialArtwork = initialArtwork, gallery =gallery )
+                ArtSpaceApp(gallery =gallery )
             }
 
 
@@ -48,14 +49,14 @@ class ArtSpaceUITest {
 
     @Test
     fun press_previous(){
-        val initialArtwork=Artwork(
+        val initialArtwork= Artwork(
             id=1,
             title="one",
             artist = "entropia",
             year = 2023,
             url = ""
         )
-        val artwork2=Artwork(
+        val artwork2= Artwork(
             id=2,
             title="two",
             artist = "entropia",
@@ -63,7 +64,7 @@ class ArtSpaceUITest {
             url = ""
         )
 
-        val artwork3=Artwork(
+        val artwork3= Artwork(
             id=3,
             title="three",
             artist = "entropia",
@@ -74,7 +75,7 @@ class ArtSpaceUITest {
         composeTestRule.setContent {
 
             ArtSpaceTheme() {
-                ArtSpaceApp(initialArtwork = initialArtwork, gallery =gallery )
+                ArtSpaceApp(gallery =gallery )
             }
 
 

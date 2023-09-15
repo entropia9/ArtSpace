@@ -1,7 +1,8 @@
-package com.example.artspace
+package com.example.artspace.database
 
 import androidx.room.Dao
 import androidx.room.Query
+import com.example.artspace.model.Artwork
 
 @Dao
 interface ArtworkDao{

@@ -27,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -38,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
+import com.example.artspace.database.ArtworkDatabase
 import com.example.compose.ArtSpaceTheme
 
 
@@ -60,11 +62,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun ArtSpaceApp(gallery: Gallery) {
+fun ArtSpaceApp(gallery: Gallery, modifier: Modifier = Modifier) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly,
-        modifier = Modifier
+        modifier = modifier
             .background(MaterialTheme.colorScheme.secondaryContainer)
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
@@ -95,7 +97,7 @@ fun ArtSpaceApp(gallery: Gallery) {
         )
         ButtonsRow(
             modifier = Modifier
-                .padding(bottom = 20.dp)
+                .padding(bottom = dimensionResource(id = R.dimen.padding_large))
                 .align(Alignment.End),
             nextFunction = {
                 currentArtwork = gallery.getNextArtworkData()
@@ -132,7 +134,7 @@ fun ArtworkDisplay(
         color = MaterialTheme.colorScheme.secondary,
         modifier = modifier
             .wrapContentSize()
-            .padding(20.dp),
+            .padding(dimensionResource(id = R.dimen.padding_large)),
         shape = RoundedCornerShape(5),
         shadowElevation = 20.dp
     ) {
@@ -141,7 +143,7 @@ fun ArtworkDisplay(
             contentDescription = contentDescription,
             modifier = Modifier
                 .size(433.dp)
-                .padding(20.dp),
+                .padding(dimensionResource(id = R.dimen.padding_large)),
             transition = CrossFade
         )
     }
@@ -154,7 +156,7 @@ fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier 
     Surface(
         color = MaterialTheme.colorScheme.inversePrimary, modifier = modifier
             .fillMaxWidth()
-            .padding(20.dp),
+            .padding(dimensionResource(id = R.dimen.padding_large)),
         shape = RoundedCornerShape(5)
     ) {
         Column(
@@ -195,7 +197,10 @@ fun ButtonsRow(
             onClick = previousFunction,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 16.dp, end = 8.dp)
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_medium),
+                    end = dimensionResource(id = R.dimen.padding_small)
+                )
         ) {
             Text(text = stringResource(id = R.string.button_previous))
         }
@@ -203,7 +208,10 @@ fun ButtonsRow(
             onClick = nextFunction,
             modifier = Modifier
                 .weight(1f)
-                .padding(start = 8.dp, end = 16.dp)
+                .padding(
+                    start = dimensionResource(id = R.dimen.padding_small),
+                    end = dimensionResource(id = R.dimen.padding_medium)
+                )
         ) {
             Text(text = stringResource(id = R.string.button_next))
         }
