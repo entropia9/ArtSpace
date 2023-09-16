@@ -21,7 +21,6 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -40,6 +39,7 @@ import com.bumptech.glide.integration.compose.CrossFade
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.example.artspace.database.ArtworkDatabase
+import com.example.artspace.model.Artwork
 import com.example.compose.ArtSpaceTheme
 
 
@@ -84,7 +84,9 @@ fun ArtSpaceApp(gallery: Gallery, modifier: Modifier = Modifier) {
 
         ArtworkDisplay(
             imageUrl,
-            modifier = Modifier.align(Alignment.CenterHorizontally),
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .weight(5f),
             contentDescription = title
         )
         ArtworkData(
@@ -93,12 +95,14 @@ fun ArtSpaceApp(gallery: Gallery, modifier: Modifier = Modifier) {
             year = year,
             Modifier
                 .align(Alignment.Start)
-                .padding(bottom = 50.dp)
+                .padding(bottom = 30.dp)
+                .weight(2f)
         )
         ButtonsRow(
             modifier = Modifier
                 .padding(bottom = dimensionResource(id = R.dimen.padding_large))
-                .align(Alignment.End),
+                .align(Alignment.End)
+                .weight(1f),
             nextFunction = {
                 currentArtwork = gallery.getNextArtworkData()
                 imageUrl = currentArtwork.url
@@ -142,7 +146,7 @@ fun ArtworkDisplay(
             model = image,
             contentDescription = contentDescription,
             modifier = Modifier
-                .size(433.dp)
+                .size(432.dp)
                 .padding(dimensionResource(id = R.dimen.padding_large)),
             transition = CrossFade
         )
@@ -166,18 +170,18 @@ fun ArtworkData(title: String, artist: String, year: String, modifier: Modifier 
         ) {
             Text(
                 text = title,
-                style= MaterialTheme.typography.headlineMedium,
-                textAlign=TextAlign.Center,
+                style = MaterialTheme.typography.headlineMedium,
+                textAlign = TextAlign.Center,
                 modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_small)),
                 color = MaterialTheme.colorScheme.onSecondaryContainer
             )
-            Text( style=MaterialTheme.typography.bodyLarge,
+            Text(style = MaterialTheme.typography.bodyLarge,
                 text = buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
-                    append(artist)
-                }
-                append(" ($year)")
-            })
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
+                        append(artist)
+                    }
+                    append(" ($year)")
+                })
 
         }
     }
@@ -204,8 +208,10 @@ fun ButtonsRow(
                     end = dimensionResource(id = R.dimen.padding_small)
                 )
         ) {
-            Text(text = stringResource(id = R.string.button_previous),
-            style=MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(id = R.string.button_previous),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
         Button(
             onClick = nextFunction,
@@ -216,8 +222,10 @@ fun ButtonsRow(
                     end = dimensionResource(id = R.dimen.padding_medium)
                 )
         ) {
-            Text(text = stringResource(id = R.string.button_next),
-                style=MaterialTheme.typography.bodyLarge)
+            Text(
+                text = stringResource(id = R.string.button_next),
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
     }
 }
@@ -225,48 +233,29 @@ fun ButtonsRow(
 @Preview(showBackground = true)
 @Composable
 fun Preview() {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier
-            .background(MaterialTheme.colorScheme.secondaryContainer)
-            .verticalScroll(rememberScrollState())
-    ) {
-        val imageUrl by remember {
-            mutableStateOf("")
-        }
-        val title by remember {
-            mutableStateOf("EC Demon Prince")
-        }
-        val artist by remember {
-            mutableStateOf("test")
-        }
-        val year by remember {
-            mutableIntStateOf(2)
-            mutableIntStateOf(2)
-        }
-        ArtworkDisplay(
-            imageUrl,
-            modifier = Modifier.align(Alignment.Start)
-        )
-        ArtworkData(
-            title = title,
-            artist = artist,
-            year = year.toString(),
-            Modifier
-                .align(Alignment.Start)
-                .padding(bottom = 50.dp)
-        )
-        ButtonsRow(
-            Modifier.padding(bottom = 20.dp),
-            nextFunction = {
+    val artwork1 = Artwork(
+        id = 1,
+        title = "one",
+        artist = "entropia",
+        year = 2023,
+        url = ""
+    )
+    val artwork2 = Artwork(
+        id = 2,
+        title = "two",
+        artist = "entropia",
+        year = 2033,
+        url = ""
+    )
 
-            },
-            previousFunction = {
-
-            }
-
-        )
-    }
+    val artwork3 = Artwork(
+        id = 3,
+        title = "three",
+        artist = "entropia",
+        year = 2056,
+        url = ""
+    )
+    val gallery = Gallery(listOf(artwork1, artwork2, artwork3))
+    ArtSpaceApp(gallery = gallery)
 }
 
