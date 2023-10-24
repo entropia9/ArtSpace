@@ -5,7 +5,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.artspace.database.ArtworkDatabase
 import com.example.artspace.ui.ArtSpaceApp
-import com.example.compose.ArtSpaceTheme
+import com.example.artspace.ui.theme.ArtSpaceTheme
 
 
 class MainActivity : ComponentActivity() {

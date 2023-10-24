@@ -30,6 +30,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.CrossFade
@@ -208,7 +209,8 @@ fun ButtonsRow(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,
+    device = Devices.TABLET)
 @Composable
 fun Preview() {
     val artwork1 = Artwork(

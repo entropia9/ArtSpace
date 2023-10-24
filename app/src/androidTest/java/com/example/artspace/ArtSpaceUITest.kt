@@ -4,7 +4,7 @@ import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import com.example.artspace.model.Artwork
-import com.example.compose.ArtSpaceTheme
+import com.example.artspace.ui.theme.ArtSpaceTheme
 import org.junit.Rule
 import org.junit.Test
 
